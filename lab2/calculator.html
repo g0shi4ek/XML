@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Калькулятор</title>
+  <link rel="stylesheet" href="style.css"> 
+  <script type="text/javascript" src="script.js"></script> 
+</head>
+
+<body class = "light-theme">
+  <header>
+    <div class = "header theme-wrapper">
+      <a id = "href_gos" class = "logo" href = "https://www.gosuslugi.ru/" alt="gosuslugi"></a>
+
+      <div class="header-right">
+          <img src="https://gu-st.ru/content/Banner/Sim_cards_for_foreigners_2.svg" alt="Калькулятор">
+          <button class="theme" id="btn_change_theme">Сменить тему</button>
+      </div>
+    </div>
+  </header>
+  <div class = "container"> <!-- div - это базовый html-контейнер, который может содержать в себе другие html-элементы. -->
+    
+    <!-- блок с экраном калькулятора, где будет выводиться результат вычислений. -->
+    <div id="result" class="result light-theme">
+        0
+    </div>
+
+    <!-- блок с кнопками калькулятора. -->
+    <div id="calc_all" class="calculator">
+      <!--горизонтальный ряд из четырех кнопок-->
+      <div>  
+        <button id="btn_op_clear" class="my-btn secondary">C</button>
+        <button id="btn_op_zero" class="my-btn secondary">ⓩ</button>
+        <button id="btn_op_percent" class="my-btn secondary">%</button>
+        <button id="btn_op_back" class="my-btn secondary">𓃲</button>
+      </div>
+      
+      <div>
+        <button id="btn_digit_7" class="my-btn">7</button>
+        <button id="btn_digit_8" class="my-btn">8</button>
+        <button id="btn_digit_9" class="my-btn">9</button>
+        <button id="btn_op_mult" class="my-btn primary">x</button>
+      </div>
+
+      <div>
+        <button id="btn_digit_4" class="my-btn">4</button>
+        <button id="btn_digit_5" class="my-btn">5</button>
+        <button id="btn_digit_6" class="my-btn">6</button>
+        <button id="btn_op_fact" class="my-btn primary">!</button>
+      </div>
+
+      <div>
+        <button id="btn_digit_1" class="my-btn">1</button>
+        <button id="btn_digit_2" class="my-btn">2</button>
+        <button id="btn_digit_3" class="my-btn">3</button>
+        <button id="btn_op_plus" class="my-btn primary">+</button>
+      </div>
+
+      <div>
+        <button id="btn_digit_0" class="my-btn">0</button>
+        <button id="btn_digit_dot" class="my-btn">.</button>
+        <button id="btn_op_equal" class="my-btn primary execute">=</button>
+      </div>
+    </div>
+  </div>
+  <footer>
+    <div class = "signature">
+        <a href = "student_info.html">Информация о студенте</a>
+        <a href = "lab_info.html">Информация о лабораторной работе</a>
+    </div>
+
+    <div class = "github">
+        <a href = "https://github.com/g0shi4ek">Github</a>
+    </div>
+  </footer>
+</body>
+</html>
