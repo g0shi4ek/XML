@@ -1,82 +1,162 @@
+const BASE_URL = 'http://localhost:8000/stocks';
+
+// Общая функция для выполнения XHR запросов
+function makeXHRRequest(method, url, data = null) {
+    return new Promise((resolve, reject) => {
+        const xhr = new XMLHttpRequest();
+        xhr.open(method, url, true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+
+        xhr.onload = function() {
+            if (xhr.status >= 200 && xhr.status < 300) {
+                try {
+                    const response = xhr.responseText ? JSON.parse(xhr.responseText) : null;
+                    resolve(response);
+                } catch (e) {
+                    reject(new Error('Invalid JSON response'));
+                }
+            } else {
+                reject(new Error(`Request failed with status ${xhr.status}`));
+            }
+        };
+
+        xhr.onerror = function() {
+            reject(new Error('Network error'));
+        };
+
+        xhr.send(data ? JSON.stringify(data) : null);
+    });
+}
+
 // Получение всех данных
-export async function getStocks() {
-    try {
-        const response = await fetch('http://localhost:8000/stocks');
-        if (!response.ok) {
-            throw new Error(`Ошибка: ${response.status}`);
-        }
-        const data = await response.json();
-        return data;
-    } catch (error) {
-        console.error("Ошибка при получении данных:", error);
-        throw error;
-    }
+export function getStocks() {
+    return new Promise((resolve, reject) => {
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', BASE_URL, true);
+        
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                try {
+                    const data = JSON.parse(xhr.responseText);
+                    resolve(data);
+                } catch (e) {
+                    reject(new Error("Ошибка при парсинге данных"));
+                }
+            } else {
+                reject(new Error(`Ошибка: ${xhr.status}`));
+            }
+        };
+        
+        xhr.onerror = function() {
+            reject(new Error("Ошибка сети"));
+        };
+        
+        xhr.send();
+    });
 }
 
 // Добавление новой карточки
-export async function addStock(newStock) {
-    try {
-        const response = await fetch('http://localhost:8000/stocks', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(newStock),
-        });
-        if (!response.ok) {
-            throw new Error(`Ошибка: ${response.status}`);
-        }
-        return response.json();
-    } catch (error) {
-        console.error("Ошибка при добавлении:", error);
-        throw error;
-    }
+export function addStock(newStock) {
+    return new Promise((resolve, reject) => {
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', BASE_URL, true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        
+        xhr.onload = function() {
+            if (xhr.status >= 200 && xhr.status < 300) {
+                try {
+                    const data = JSON.parse(xhr.responseText);
+                    resolve(data);
+                } catch (e) {
+                    reject(new Error("Ошибка при парсинге ответа"));
+                }
+            } else {
+                reject(new Error(`Ошибка: ${xhr.status}`));
+            }
+        };
+        
+        xhr.onerror = function() {
+            reject(new Error("Ошибка сети"));
+        };
+        
+        xhr.send(JSON.stringify(newStock));
+    });
 }
 
-
-export async function updateStock(id, newStock) {
-    try {
-        const response = await fetch(`http://localhost:8000/stocks/update/${id}`, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(newStock),
-        });
-        if (!response.ok) {
-            throw new Error(`Ошибка: ${response.status}`);
-        }
-        return response.json();
-    } catch (error) {
-        console.error("Ошибка при добавлении:", error);
-        throw error;
-    }
+// Обновление карточки
+export function updateStock(id, newStock) {
+    return new Promise((resolve, reject) => {
+        const xhr = new XMLHttpRequest();
+        xhr.open('PUT', `${BASE_URL}/update/${id}`, true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        
+        xhr.onload = function() {
+            if (xhr.status >= 200 && xhr.status < 300) {
+                try {
+                    const data = JSON.parse(xhr.responseText);
+                    resolve(data);
+                } catch (e) {
+                    reject(new Error("Ошибка при парсинге ответа"));
+                }
+            } else {
+                reject(new Error(`Ошибка: ${xhr.status}`));
+            }
+        };
+        
+        xhr.onerror = function() {
+            reject(new Error("Ошибка сети"));
+        };
+        
+        xhr.send(JSON.stringify(newStock));
+    });
 }
 
 // Получение данных по ID
-export async function getStockById(id) {
-    try {
-        const response = await fetch(`http://localhost:8000/stocks/${id}`);
-        if (!response.ok) {
-            throw new Error(`Ошибка: ${response.status}`);
-        }
-        const data = await response.json();
-        return data;
-    } catch (error) {
-        console.error("Ошибка при получении данных по ID:", error);
-        throw error;
-    }
+export function getStockById(id) {
+    return new Promise((resolve, reject) => {
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', `${BASE_URL}/${id}`, true);
+        
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                try {
+                    const data = JSON.parse(xhr.responseText);
+                    resolve(data);
+                } catch (e) {
+                    reject(new Error("Ошибка при парсинге данных"));
+                }
+            } else {
+                reject(new Error(`Ошибка: ${xhr.status}`));
+            }
+        };
+        
+        xhr.onerror = function() {
+            reject(new Error("Ошибка сети"));
+        };
+        
+        xhr.send();
+    });
 }
 
 // Удаление по ID
-export async function deleteStockById(id) {
-    try {
-        const response = await fetch(`http://localhost:8000/stocks/${id}`, {
-            method: 'DELETE',
-            headers: { 'Content-Type': 'application/json' }
-        });
-        if (!response.ok) {
-            throw new Error(`Ошибка: ${response.status}`);
-        }
-        return { status: response.status, message: 'Удаление успешно' };
-    } catch (error) {
-        console.error("Ошибка при удалении:", error);
-        throw error;
-    }
+export function deleteStockById(id) {
+    return new Promise((resolve, reject) => {
+        const xhr = new XMLHttpRequest();
+        xhr.open('DELETE', `${BASE_URL}/${id}`, true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        
+        xhr.onload = function() {
+            if (xhr.status >= 200 && xhr.status < 300) {
+                resolve({ status: xhr.status, message: 'Удаление успешно' });
+            } else {
+                reject(new Error(`Ошибка: ${xhr.status}`));
+            }
+        };
+        
+        xhr.onerror = function() {
+            reject(new Error("Ошибка сети"));
+        };
+        
+        xhr.send();
+    });
 }
