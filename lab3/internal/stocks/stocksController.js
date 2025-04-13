@@ -26,6 +26,16 @@ class StocksController {
         }
     }
 
+    static updateStock(req, res) {
+        try {
+            const id = Number.parseInt(req.params.id);
+            const updatedStock = StocksService.updateStock(id, req.body);
+            res.send(updatedStock);
+        } catch (err) {
+            res.status(400).send({ status: 'Bad Request', message: err.message });
+        }
+    }
+
     static deleteStock(req, res) {
         try {
             const id = Number.parseInt(req.params.id);

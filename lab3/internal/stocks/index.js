@@ -9,6 +9,7 @@ router.post('/', StocksController.addStock);
 router.delete('/:id', StocksController.deleteStock);
 router.post('/:id/like', StocksController.likeStock);
 router.post('/:id/dislike', StocksController.dislikeStock);
+router.put('/update/:id', StocksController.updateStock);
 
 
 module.exports = router;

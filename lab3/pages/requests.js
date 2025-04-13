@@ -31,6 +31,24 @@ export async function addStock(newStock) {
     }
 }
 
+
+export async function updateStock(id, newStock) {
+    try {
+        const response = await fetch(`http://localhost:8000/stocks/update/${id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(newStock),
+        });
+        if (!response.ok) {
+            throw new Error(`Ошибка: ${response.status}`);
+        }
+        return response.json();
+    } catch (error) {
+        console.error("Ошибка при добавлении:", error);
+        throw error;
+    }
+}
+
 // Получение данных по ID
 export async function getStockById(id) {
     try {

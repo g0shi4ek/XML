@@ -1,7 +1,7 @@
 const {StocksRepository} = require('./stocksRepository');
 
 class StockDAO {
-    constructor(id, src, title, text,likes = 0, dislikes = 0) {
+    constructor(id, src, title, text, likes = 0, dislikes = 0) {
         this.id = id;
         this.src = src;
         this.title = title;
@@ -19,15 +19,12 @@ class StockDAO {
 
     static _validate(stock) {
         if (
-            stock.id === undefined ||
             stock.src === undefined ||
             stock.title === undefined ||
             stock.text === undefined 
         ) {
             throw new Error('invalidate stock data');
         }
-
-        this._validateId(stock.id);
     }
 
     static find() {
@@ -51,9 +48,39 @@ class StockDAO {
         this._validate(stock);
 
         const stocks = StocksRepository.read();
-        StocksRepository.write([...stocks, stock]);
 
-        return new this(stock.id, stock.src, stock.title, stock.text, stock.likes, stock.dislikes);
+        // Генерируем новый ID (максимальный существующий ID + 1)
+        const maxId = stocks.length > 0 ? Math.max(...stocks.map(item => item.id)) : 0;
+        const newId = maxId + 1;
+
+        // Создаем новый объект с автоматически сгенерированным ID
+        const newStock = {
+            ...stock,
+            id: newId
+        };
+
+        StocksRepository.write([...stocks, newStock]);
+
+        return new this(newStock.id, newStock.src, newStock.title, newStock.text, newStock.likes, newStock.dislikes);
+    }
+
+    static update(id, stock){
+        
+        const stocks = StocksRepository.read();
+        const stockIndex = stocks.findIndex(s => s.id === id);
+        
+        if (stockIndex === -1) {
+            throw new Error('Stock not found');
+        }
+
+        // Обновляем поля
+        stocks[stockIndex].src = stock.src;
+        stocks[stockIndex].title = stock.title;
+        stocks[stockIndex].text = stock.text;
+        
+        StocksRepository.write(stocks);
+        
+        return stocks[stockIndex];
     }
 
     static delete(id) {

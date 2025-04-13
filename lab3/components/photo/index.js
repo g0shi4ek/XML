@@ -1,5 +1,6 @@
 import { ButtonGroupComponent } from "../group-button/index.js";
 
+
 export class PhotoComponent {
     constructor(parent) {
         this.parent = parent;
